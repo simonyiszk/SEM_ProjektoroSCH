@@ -1,0 +1,10 @@
+// Serial settings
+#define BAUDRATE 9600
+#define PARITY 0
+#define STOPBIT 2
+#define FLOWCONTROL 0
+// Serial commands
+#define TURNON { 0x00, 0x01, 0x02 }
+#define TURNOFF { 0x00, 0x01, 0x02 }
+#define INPUTSELECTHDMI { 0x00, 0x01, 0x02 }
+#define INPUTSELECTVGA { 0x00, 0x01, 0x02 }

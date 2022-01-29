@@ -29,13 +29,9 @@ void printSettings()
 }
 
 void printHex(uint8_t data[]){
-  for (int i = 0; i < _MAX_DATA_SIZE; i++)
-  {
-  char hexCar[2];
-  sprintf(hexCar, "0x%02X ", data[i]);
-  Serial.print(hexCar);
-  }
-  Serial.println();
+  for (int i = 0; i < _MAX_DATA_SIZE; i++) {
+        Serial.write(data[i]);
+      }
 }
 
 void printData(){
@@ -53,19 +49,42 @@ void printData(){
 void setup()
 {
   Serial.begin(9600); // USB Debug interface
-  Serial1.begin(SerialSettings.baudRate, SERIAL_8N2);
+  //Serial1.begin(SerialSettings.baudRate, SERIAL_8N2);
   #ifdef DEBUG
   pinMode(LED_BUILTIN, OUTPUT); // TODO: 2x villoghat majd bekapcsolva maradhatna debugkor
   printSettings();
   printData();
   #endif
+  Serial.println(".");
 }
 
 void loop()
 {
-  //TODO: Serial-on küldött üzenetre lekérdezni a beállításokat és adatokat ha DEBUG definiálva van
-  Serial1.write("Hello SEM!");
-  delay(1000);
-  Serial1.write("Demo szoveg");
-  delay(1000);
+  Serial.println(".");
+  if (Serial.available() > 0) {
+  int cmd = Serial.parseInt();
+  
+
+  switch (cmd) {
+    case 1:
+      Serial.println(F("1."));
+      printHex(ProjectorData.TurnOn);
+      break;
+    case 2:
+     Serial.println("2.");
+     printHex(ProjectorData.TurnOff);
+      break;
+    case 3:
+     Serial.println("3.");
+     printHex(ProjectorData.InputSelectHDMI);
+      break;
+    case 4:
+     Serial.println("4.");
+     printHex(ProjectorData.InputSelectVGA);
+      break;
+    default:
+      break;
+   }
+  }
+  delay(100);
 }

@@ -1,4 +1,4 @@
 (sym_lib_table
-  (lib (name "projektorosch")(type "KiCad")(uri "${KIPRJMOD}/projektorosch.kicad_sym")(options "")(descr ""))
+  (version 7)
   (lib (name "ledbtn")(type "KiCad")(uri "${KIPRJMOD}/ledbtn.kicad_sym")(options "")(descr ""))
 )

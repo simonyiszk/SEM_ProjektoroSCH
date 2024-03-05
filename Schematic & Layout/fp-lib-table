@@ -1,3 +1,4 @@
 (fp_lib_table
-  (lib (name "ledbtn_footprint")(type "KiCad")(uri "${KIPRJMOD}/ledbtn_footprint.pretty")(options "")(descr ""))
+  (version 7)
+  (lib (name "Library")(type "KiCad")(uri "${KIPRJMOD}/ledbtn_footprint.pretty")(options "")(descr ""))
 )

@@ -1,6 +1,8 @@
 .vscode/*
 config.h
 
+*.FCBak
+
 # For PCBs designed using KiCad: https://www.kicad.org/
 # Format documentation: https://kicad.org/help/file-formats/
 

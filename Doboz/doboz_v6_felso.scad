@@ -51,13 +51,13 @@ difference(){
 	}
 
 	//fél henger pöckök a rögzítéshez:
-	translate([19-$oldalso_kisebbites,2,1.5])
+	translate([$belso_szel/2+$anyagvastagsag_oldalfal/2-$oldalso_kisebbites,2,1.5])
 		difference(){
 			cylinder(r=1.5, h=4, center=true);
 			translate([0,-5,-5])cube([10,10,10]);
 		}
 	mirror([1,0,0])
-	translate([19-$oldalso_kisebbites,2,1.5])
+	translate([$belso_szel/2+$anyagvastagsag_oldalfal/2-$oldalso_kisebbites,2,1.5])
 		difference(){
 			cylinder(r=1.5, h=4, center=true);
 			translate([0,-5,-5])cube([10,10,10]);

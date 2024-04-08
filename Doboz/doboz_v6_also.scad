@@ -15,7 +15,7 @@ $ATTEKINTO_NEZET=false;
 $FELBEVAGOTT_NEZET=false;
 
 $fn=15; //ÍV FELBONTÁS - STL-BE EXPORTÁLÁS ELŐTT VEDD FEL PL. 100-ra!
-//(jelentősen több ideig fog generálni, úgyhogy: átírod, rányomsz a "render" gombra (vagy F6), megvárod, Export, aztán Ctrl+Z)
+//(jelentősen több ideig fog generálni, úgyhogy: kikommenteled az importokat, átírod $fn=100-ra, rányomsz a "render" gombra (vagy F6), megvárod míg legenerálja, File->Export, aztán Ctrl+Z)
 
 //Szélesség állításnál az alsó nyáktartó peremeket kézzel kell igazítani
 //
@@ -49,13 +49,13 @@ difference(){//alsó rész mínusz felső rész
 					cube([$belso_szel+2*$anyagvastagsag_oldalfal,$belso_hossz+2*$anyagvastagsag_oldalfal,$kulso_mag], center=true);
 
 				//fél hengerek a talpon a rögzítéshez:
-				translate([0,45,$anyagvastagsag_alja/2])
+				translate([0,$belso_hossz/2+$anyagvastagsag_oldalfal,$anyagvastagsag_alja/2])
 					difference(){
-						cylinder(r=10,h=3,center=true);
+						cylinder(r=$henger_atmero,h=$anyagvastagsag_alja,center=true);
 						translate([0,4.5,0])
-							cylinder(r=3,h=10,center=true);
+							cylinder(r=$henger_luk,h=$anyagvastagsag_alja,center=true);
 					}
-				translate([0,-45,$anyagvastagsag_alja/2])
+				translate([0,-$belso_hossz/2-$anyagvastagsag_oldalfal,$anyagvastagsag_alja/2])
 					difference(){
 						cylinder(r=$henger_atmero,h=$anyagvastagsag_alja,center=true);
 						translate([0,-4.5,0])

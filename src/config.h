@@ -1,35 +1,43 @@
 #pragma once
 
-const int baudrate = 9600;
+#define BAUDRATE 9600
 
 enum ProjectorType {
     nec, acer, benq
 };
 
+class Command {
+    public:
+    int* command;
+    int length;
+    Command(int* command, int length) : command(command), length(length) {}
+    Command() {};
+};
+
 class Projector {
 private:
-    static void printHexToSerial(int*, int);
-
-    static void turnOnNec();
-    static void turnOffNec();
-    static void sourceNec();
-
-    static void turnOnAcer();
-    static void turnOffAcer();
-    static void sourceAcer();
-
-    static void turnOnBenq();
-    static void turnOffBenq();
-    static void hdmiBenQ();
-    static void hdmi2BenQ();
     
 
-public:
+    int turnOnNecCodes[6] = {0x02, 0x0, 0x0, 0x0, 0x0, 0x02};
+    int turnOffNecCodes[6] = {2, 1, 0, 0, 0, 3};
+    int sourceNecCode[8] = {0x02, 0x03, 0x00, 0x00, 0x02, 0x01, 0x1, 0x9};
 
-    void (*turnOnCommand)();
-    void (*turnOffCommand)();
-    void (*sourceCommand)();
-    void (*someFunction)();
+    int turnOnAcerCodes[11] = {0x2A, 0x20, 0x30, 0x20, 0x49, 0x52, 0x20, 0x30, 0x30, 0x31, 0x0D};
+    int turnOffAcerCodes[11] = {0x2A, 0x20, 0x30, 0x20, 0x49, 0x52, 0x20, 0x30, 0x30, 0x32, 0x0D};
+    int sourceAcerCodes[11] = {0x2A, 0x20, 0x30, 0x20, 0x49, 0x52, 0x20, 0x30, 0x33, 0x31, 0x0D};
+
+    int turnOnBenqCodes[10] = {0x0D, 0x2A, 0x70, 0x6F, 0x77, 0x3D, 0x6F, 0x6E, 0x23, 0x0D};
+    int turnOffBenqCodes[11] = {0x0D, 0x2A, 0x70, 0x6F, 0x77, 0x3D, 0x6F, 0x66, 0x66, 0x23, 0x0D};
+    int sourceBenqCodes[13] = {0x0D, 0x2A, 0x73, 0x6F, 0x75, 0x72, 0x3D, 0x68, 0x64, 0x6D, 0x69, 0x23, 0x0D};
+    int source2BenqCodes[14] = {0x0D, 0x2A, 0x73, 0x6F, 0x75, 0x72, 0x3D, 0x68, 0x64, 0x6D, 0x69, 0x32, 0x23, 0x0D};
+    
+public:
+    void printHexToSerial(Command);
+
+    Command turnOnCodes;
+    Command turnOffCodes;
+    Command sourceCodes;
+    Command source2Codes;
 
     Projector(ProjectorType projectoryType);
 };

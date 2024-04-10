@@ -1,91 +1,86 @@
 #include <Arduino.h>
 #include "config.h"
 
-//#define DEBUG
-
 enum FunctionTypes
 {
-    powerOn = PC3,
-    powerOff = PC4,
-    source = PC2,
-    some = PC5
+    powerOn = PIN_PC3,
+    powerOff = PIN_PC4,
+    source = PIN_PC2,
+    source2 = PIN_PC5
 };
 
-// Ide kell írni a bemeneti pineket, ahova a gombok vannak bekötve
-int functionPins[] = {PIN_PC3, PIN_PC4, PIN_PC2}; //+ a 4. gomb
+int functionPins[] = {PIN_PC3, PIN_PC4, PIN_PC2, PIN_PC5}; // gombok
+int ledPins[] = {PIN_PB1, PIN_PD6, PIN_PB2, PIN_PD5};      // ledek
 
-FunctionTypes readInput()
+FunctionTypes readInput(bool lastStatus)
 {
     for (int i = 0; i < 4; i++)
     {
-        if (!digitalRead(functionPins[i])) //0-ban aktívak a bemenetek!
-            return FunctionTypes(functionPins[i]);
+        if (!digitalRead(functionPins[i]))
+        { // 0-ban aktívak a bemenetek!
+            if (!lastStatus)
+            {
+                lastStatus = true;
+                return FunctionTypes(functionPins[i]); // Első gomnyomás
+            }
+            else
+                return FunctionTypes(0); // Ha volt gombnyomás de már a sokadik
+        }
     }
-    return FunctionTypes(0);
+    lastStatus = false;
+    return FunctionTypes(0); // Nincs gombnyomás
 }
 
 void setupFunctionPins()
 {
-    for (int i = 0; i < 3; i++)//Ezt majd 4-re kell állítani ha megvan a 4. gomb
+    for (int i = 0; i < 4; i++)
     {
         pinMode(functionPins[i], INPUT);
     }
 }
 
+void setupLedPins()
+{
+    for (int i = 0; i < 4; i++)
+    {
+        pinMode(ledPins[i], OUTPUT);
+        digitalWrite(ledPins[i], LOW); // Minden led lekapcsolása
+    }
+}
+
 void setup()
 {
-
-    Serial.begin(baudrate);
+    Serial.begin(BAUDRATE);
     delay(50);
-
-    #ifdef DEBUG
-    pinMode(PIN_PD5, OUTPUT);
-    digitalWrite(PIN_PD5, HIGH);
-    #endif
-
-   setupFunctionPins();
+    setupFunctionPins();
+    setupLedPins();
 }
 
 Projector p1(benq);
 
+bool lastStatus = false;
 void loop()
 {
-
-    #ifdef DEBUG
-
-    if (!digitalRead(PIN_PC3))
-    {
-        p1.turnOnCommand();
-        delay(2000);
-    }
-
-    if (!digitalRead(PIN_PC3))
-    {
-        digitalWrite(PIN_PD5, LOW);
-    }
-
-    return;
-
-    #endif
-
-    switch (readInput())
+    switch (readInput(lastStatus))
     {
     case powerOn:
-        p1.turnOnCommand();
+        digitalWrite(PIN_PD5, HIGH);
+        p1.printHexToSerial(p1.turnOnCodes);
         break;
 
     case powerOff:
-        p1.turnOffCommand();
+        p1.printHexToSerial(p1.turnOffCodes);
+        digitalWrite(PIN_PD5, LOW);
         break;
 
     case source:
-        p1.sourceCommand();
+        p1.printHexToSerial(p1.sourceCodes);
         break;
-        /* EZT CSAK A BENQ-nál!
-    case some:
-        p1.someFunction();
+
+    case source2:
+        p1.printHexToSerial(p1.source2Codes);
         break;
-        */
+
     default:
         break;
     }

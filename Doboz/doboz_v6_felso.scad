@@ -5,18 +5,18 @@
 
 $fn=100;
 
-//Mennyivel legyen keskenyebb a nyomtatott felső darab az alsóban neki kialakított helynél? Ha nem fér be, feszül, akkor növeld az értéket.
-$oldalso_kisebbites=0.05;
+//Mennyivel legyen keskenyebb a nyomtatott felső darab az alsóban neki kialakított helynél (x2, azaz mindkét oldalból levon ennyit)? Ha nem fér be, feszül, akkor növeld az értéket.
+$oldalso_kisebbites=0.7;
 
-$lekerekites=1;
-$belso_hossz=85;
+$lekerekites=2;
+$belso_hossz=86;
 $belso_szel=40;
 $kulso_mag=20;
 $anyagvastagsag_oldalfal=2;
 $anyagvastagsag_alja=3;
-$henger_atmero=14;
+$henger_sugar=14;
 $henger_luk=3;
-$felso_resz_hossz=49; //+anyagvastagsag_oldalfal
+$felso_resz_hossz=50; //+anyagvastagsag_oldalfal
 
 translate([0,-$belso_hossz/2-$anyagvastagsag_oldalfal,16])
 color("#b0b0b0",0.8)
@@ -36,7 +36,7 @@ difference(){
 					[+$belso_szel/2-0.5-$oldalso_kisebbites,3],
 					[+$belso_szel/2-0.5-$oldalso_kisebbites,4],
 					[-$belso_szel/2+0.5+$oldalso_kisebbites,4],
-					[-$belso_szel/2+0.5+$oldalso_kisebbites, 3],
+					[-$belso_szel/2+0.5+$oldalso_kisebbites,3],
 					[-$belso_szel/2-0.5+$oldalso_kisebbites,1] ]);
 		//csatlakozókat leszorító kiálló rész az alján
 		translate([-13,0,0])
@@ -63,13 +63,13 @@ difference(){
 			translate([0,-5,-5])cube([10,10,10]);
 		}
 	//bevágások a hajlékonysághoz a rögzítésnél
-	translate([0.42*$belso_szel-$oldalso_kisebbites,0,0])
-		cube([1,15,4]);
+	translate([0.40*$belso_szel-$oldalso_kisebbites,0,0])
+		cube([1.5,15,4]);
 	mirror([1,0,0])
-	translate([0.42*$belso_szel-$oldalso_kisebbites,0,0])
-		cube([1,15,4]);
+	translate([0.40*$belso_szel-$oldalso_kisebbites,0,0])
+		cube([1.5,15,4]);
 	//felső lekerekítés a elejénél:
-	translate([0,$lekerekites/2,3+$lekerekites/2])
+	translate([0,$lekerekites/2,4-$lekerekites/2])
 		rotate([0,180,-90])
 			el_lekerekites_negativ($lekerekites,$belso_szel+2*$anyagvastagsag_oldalfal);
 }

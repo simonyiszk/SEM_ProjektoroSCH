@@ -3,34 +3,33 @@
 
 //color("red",0.8) translate([0,0,0]) import("doboz_v4-Also2.stl");
 //color("pink",0.8)translate([0,0,0]) import("doboz_v4-Felso2.stl");
-
-color("lightgreen",0.8)translate([0,0,0]) import("doboz_v4-elektronika_3d.stl");
-
+color("lightgreen",0.8) translate([0,0,0]) import("doboz_v4-elektronika_3d.stl");
 color("lightblue",0.8) translate([0,0,0]) import("doboz_v6_felso.stl");
-
-
 
 //HA JOBBAN ÁT SZERETNÉD LÁTNI MI HOGY VAN, KAPCSOLD BE EZEKET:
 $ATTEKINTO_NEZET=false;
 $FELBEVAGOTT_NEZET=false;
 
 $fn=15; //ÍV FELBONTÁS - STL-BE EXPORTÁLÁS ELŐTT VEDD FEL PL. 100-ra!
-//(jelentősen több ideig fog generálni, úgyhogy: kikommenteled az importokat, átírod $fn=100-ra, rányomsz a "render" gombra (vagy F6), megvárod míg legenerálja, File->Export, aztán Ctrl+Z)
+//(jelentősen több ideig fog generálni, úgyhogy az EXPORTÁLÁS LÉPÉSEI:
+//kikommenteled az importokat; átírod $fn=100-ra; rányomsz a "render" gombra (vagy F6); megvárod míg legenerálja; File->Export; aztán Ctrl+Z amennyiszer kell)
 
 //Szélesség állításnál az alsó nyáktartó peremeket kézzel kell igazítani
+//
+//Hosszúság állításánál  fenti részt tartó vezetősíneket és a gomb mlletti takrókt kézzel kell átméretezni
 //
 //A felső rész módosításakor ne felejtsd el átmásolni innen a konstansokat!
 //
 
-$lekerekites=1;
-$belso_hossz=85;
+$lekerekites=2;
+$belso_hossz=86;
 $belso_szel=40;
 $kulso_mag=20;
 $anyagvastagsag_oldalfal=2;
 $anyagvastagsag_alja=3;
-$henger_atmero=14;
+$henger_sugar=14;
 $henger_luk=3;
-$felso_resz_hossz=49; //+anyagvastagsag_oldalfal
+$felso_resz_hossz=50; //+anyagvastagsag_oldalfal
 
 color("#b0b0b0",0.8)
 render(){
@@ -51,19 +50,24 @@ difference(){//alsó rész mínusz felső rész
 				//fél hengerek a talpon a rögzítéshez:
 				translate([0,$belso_hossz/2+$anyagvastagsag_oldalfal,$anyagvastagsag_alja/2])
 					difference(){
-						cylinder(r=$henger_atmero,h=$anyagvastagsag_alja,center=true);
+						cylinder(r=$henger_sugar,h=$anyagvastagsag_alja,center=true);
 						translate([0,4.5,0])
 							cylinder(r=$henger_luk,h=$anyagvastagsag_alja,center=true);
+						//felfogató csavar süllyesztés (45 fokos kúp):
+						translate([0,4.5,+2.2])
+							cylinder(r1=0,r2=10,h=10,center=true);
 					}
 				translate([0,-$belso_hossz/2-$anyagvastagsag_oldalfal,$anyagvastagsag_alja/2])
 					difference(){
-						cylinder(r=$henger_atmero,h=$anyagvastagsag_alja,center=true);
+						cylinder(r=$henger_sugar,h=$anyagvastagsag_alja,center=true);
 						translate([0,-4.5,0])
 							cylinder(r=$henger_luk,h=$anyagvastagsag_alja,center=true);
+						translate([0,-4.5,+2.2])
+							cylinder(r1=0,r2=10,h=10,center=true);
 					}
 			}
 			
-			//oldalfalból kivágott hely csatlakozóknak
+			//oldalfalból kivágott hely csatlakozóknak:
 			translate([-15.4,-45.001,$anyagvastagsag_alja])
 				cube([23,2.502,30],center=false);
 			
@@ -79,14 +83,14 @@ difference(){//alsó rész mínusz felső rész
 				el_lekerekites_negativ($lekerekites,$belso_hossz+2*$anyagvastagsag_oldalfal);
 			translate([-$belso_szel/2,-$belso_hossz/2-$anyagvastagsag_oldalfal+$lekerekites/2,$lekerekites/2])
 				rotate([0,0,90])
-					el_lekerekites_negativ($lekerekites,2*($belso_szel/2-$henger_atmero));
+					el_lekerekites_negativ($lekerekites,2*($belso_szel/2-$henger_sugar));
 			translate([-$belso_szel/2,+$belso_hossz/2+$anyagvastagsag_oldalfal-$lekerekites/2,$lekerekites/2])
 				rotate([0,0,-90])
-					el_lekerekites_negativ($lekerekites,2*($belso_szel/2-$henger_atmero));
-			translate([-$belso_szel/2-$anyagvastagsag_oldalfal+$lekerekites/2,-$belso_hossz/2-$anyagvastagsag_oldalfal/2-$lekerekites/2,$lekerekites/2])
+					el_lekerekites_negativ($lekerekites,2*($belso_szel/2-$henger_sugar));
+			translate([-$belso_szel/2-$anyagvastagsag_oldalfal+$lekerekites/2,-$belso_hossz/2-$anyagvastagsag_oldalfal+$lekerekites/2,$lekerekites/2])
 				rotate([0,0,0])
 					sarok_legombolyites_negativ($lekerekites);
-			translate([-$belso_szel/2-$anyagvastagsag_oldalfal+$lekerekites/2,+$belso_hossz/2+$anyagvastagsag_oldalfal/2+$lekerekites/2,$lekerekites/2])
+			translate([-$belso_szel/2-$anyagvastagsag_oldalfal+$lekerekites/2,+$belso_hossz/2+$anyagvastagsag_oldalfal-$lekerekites/2,$lekerekites/2])
 				rotate([0,0,-90])
 					sarok_legombolyites_negativ($lekerekites);
 			//oldalsó lekerekítések:
@@ -106,10 +110,10 @@ difference(){//alsó rész mínusz felső rész
 			translate([0,+$belso_hossz/2+$anyagvastagsag_oldalfal-$lekerekites/2,$kulso_mag-$lekerekites/2])
 				rotate([0,90,-90])
 					el_lekerekites_negativ($lekerekites,$belso_szel+2*$anyagvastagsag_oldalfal);
-			translate([-$belso_szel/2-$anyagvastagsag_oldalfal+$lekerekites/2,-$belso_hossz/2-$anyagvastagsag_oldalfal/2-$lekerekites/2,$kulso_mag-$lekerekites/2])
+			translate([-$belso_szel/2-$anyagvastagsag_oldalfal+$lekerekites/2,-$belso_hossz/2-$anyagvastagsag_oldalfal+$lekerekites/2,$kulso_mag-$lekerekites/2])
 				rotate([0,90,0])
 					sarok_legombolyites_negativ($lekerekites);
-			translate([-$belso_szel/2-$anyagvastagsag_oldalfal+$lekerekites/2,+$belso_hossz/2+$anyagvastagsag_oldalfal/2+$lekerekites/2,$kulso_mag-$lekerekites/2])
+			translate([-$belso_szel/2-$anyagvastagsag_oldalfal+$lekerekites/2,+$belso_hossz/2+$anyagvastagsag_oldalfal-$lekerekites/2,$kulso_mag-$lekerekites/2])
 				rotate([0,90,-90])
 					sarok_legombolyites_negativ($lekerekites);
 			
@@ -117,19 +121,20 @@ difference(){//alsó rész mínusz felső rész
 			//jobb oldal:
 			mirror([1,0,0]){
 			
+			
 			//alsó lekerekítések:
 			translate([(-$belso_szel/2)-$anyagvastagsag_oldalfal+$lekerekites/2,0,$lekerekites/2])
 				el_lekerekites_negativ($lekerekites,$belso_hossz+2*$anyagvastagsag_oldalfal);
 			translate([-$belso_szel/2,-$belso_hossz/2-$anyagvastagsag_oldalfal+$lekerekites/2,$lekerekites/2])
 				rotate([0,0,90])
-					el_lekerekites_negativ($lekerekites,2*($belso_szel/2-$henger_atmero));
+					el_lekerekites_negativ($lekerekites,2*($belso_szel/2-$henger_sugar));
 			translate([-$belso_szel/2,+$belso_hossz/2+$anyagvastagsag_oldalfal-$lekerekites/2,$lekerekites/2])
 				rotate([0,0,-90])
-					el_lekerekites_negativ($lekerekites,2*($belso_szel/2-$henger_atmero));
-			translate([-$belso_szel/2-$anyagvastagsag_oldalfal+$lekerekites/2,-$belso_hossz/2-$anyagvastagsag_oldalfal/2-$lekerekites/2,$lekerekites/2])
+					el_lekerekites_negativ($lekerekites,2*($belso_szel/2-$henger_sugar));
+			translate([-$belso_szel/2-$anyagvastagsag_oldalfal+$lekerekites/2,-$belso_hossz/2-$anyagvastagsag_oldalfal+$lekerekites/2,$lekerekites/2])
 				rotate([0,0,0])
 					sarok_legombolyites_negativ($lekerekites);
-			translate([-$belso_szel/2-$anyagvastagsag_oldalfal+$lekerekites/2,+$belso_hossz/2+$anyagvastagsag_oldalfal/2+$lekerekites/2,$lekerekites/2])
+			translate([-$belso_szel/2-$anyagvastagsag_oldalfal+$lekerekites/2,+$belso_hossz/2+$anyagvastagsag_oldalfal-$lekerekites/2,$lekerekites/2])
 				rotate([0,0,-90])
 					sarok_legombolyites_negativ($lekerekites);
 			//oldalsó lekerekítések:
@@ -149,10 +154,10 @@ difference(){//alsó rész mínusz felső rész
 			translate([0,+$belso_hossz/2+$anyagvastagsag_oldalfal-$lekerekites/2,$kulso_mag-$lekerekites/2])
 				rotate([0,90,-90])
 					el_lekerekites_negativ($lekerekites,$belso_szel+2*$anyagvastagsag_oldalfal);
-			translate([-$belso_szel/2-$anyagvastagsag_oldalfal+$lekerekites/2,-$belso_hossz/2-$anyagvastagsag_oldalfal/2-$lekerekites/2,$kulso_mag-$lekerekites/2])
+			translate([-$belso_szel/2-$anyagvastagsag_oldalfal+$lekerekites/2,-$belso_hossz/2-$anyagvastagsag_oldalfal+$lekerekites/2,$kulso_mag-$lekerekites/2])
 				rotate([0,90,0])
 					sarok_legombolyites_negativ($lekerekites);
-			translate([-$belso_szel/2-$anyagvastagsag_oldalfal+$lekerekites/2,+$belso_hossz/2+$anyagvastagsag_oldalfal/2+$lekerekites/2,$kulso_mag-$lekerekites/2])
+			translate([-$belso_szel/2-$anyagvastagsag_oldalfal+$lekerekites/2,+$belso_hossz/2+$anyagvastagsag_oldalfal-$lekerekites/2,$kulso_mag-$lekerekites/2])
 				rotate([0,90,-90])
 					sarok_legombolyites_negativ($lekerekites);
 			}//mirror (lekerekítések)
@@ -206,7 +211,7 @@ difference(){//alsó rész mínusz felső rész
 					[+$belso_szel/2-0.5,3],
 					[+$belso_szel/2-0.5,4],
 					[-$belso_szel/2+0.5,4],
-					[-$belso_szel/2+0.5, 3],
+					[-$belso_szel/2+0.5,3],
 					[-$belso_szel/2-0.5,1] ]);
 	}
 	
@@ -231,40 +236,40 @@ translate([-$belso_szel/2-1,-$belso_hossz/2-$anyagvastagsag_oldalfal+2,17])
 //nyákot oldalról rögzítő hengerek:
 translate([-$belso_szel/2-1,27,$kulso_mag/2])
 	difference(){
-		cylinder(r=2.5, h=$kulso_mag, center=true);
+		cylinder(r=2.7, h=$kulso_mag, center=true);
 		translate([-4,0,0])cube([10,10,10000],center=true);
 	}
 mirror([1,0,0])
 translate([-$belso_szel/2-1,27,$kulso_mag/2])
 	difference(){
-		cylinder(r=2.5, h=$kulso_mag, center=true);
+		cylinder(r=2.7, h=$kulso_mag, center=true);
 		translate([-4,0,0])cube([10,10,10000],center=true);
 	}
 translate([-$belso_szel/2-1,-35,7.5])
 	difference(){
-		cylinder(r=2.5, h=15, center=true);
+		cylinder(r=2.7, h=15, center=true);
 		translate([-4,0,0])cube([10,10,10000],center=true);
 	}
 mirror([1,0,0])
 translate([-$belso_szel/2-1,-35,7.5])
 	difference(){
-		cylinder(r=2.5, h=15, center=true);
+		cylinder(r=2.7, h=15, center=true);
 		translate([-4,0,0])cube([10,10,10000],center=true);
 	}
 //gomboknál szélső takaró fent:
 translate([-$belso_szel/2,$belso_hossz/2,15])
 	rotate([90,0,0])
-		linear_extrude(35.5)
-		polygon([ [0,0], [2,3], [2,5], [0,5] ]);
+		linear_extrude(36.0)
+		polygon([ [0,-1], [3,3], [3,5], [0,5] ]);
 mirror([1,0,0])
 translate([-$belso_szel/2,$belso_hossz/2,15])
 	rotate([90,0,0])
-		linear_extrude(35.5)
-		polygon([ [0,0], [2,3], [2,5], [0,5] ]);
+		linear_extrude(36.0)
+		polygon([ [0,-1], [3,3], [3,5], [0,5] ]);
 translate([+$belso_szel/2,$belso_hossz/2,15])
 	rotate([90,0,-90])
 		linear_extrude($belso_szel)
-		#polygon([ [0,0], [1,3], [1,5], [0,5] ]);
+		polygon([ [0,-1], [2,3], [2,5], [0,5] ]);
 }//render
 
 
